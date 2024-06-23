@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
+  final Function()? onTap;
+  const CustomButton({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).pop();
-      },
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
         width: MediaQuery.sizeOf(context).width,
         height: 55,
