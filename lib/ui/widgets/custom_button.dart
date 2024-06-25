@@ -3,7 +3,8 @@ import 'package:notes_app/constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   final Function()? onTap;
-  const CustomButton({super.key, this.onTap});
+  final bool isLoading;
+  const CustomButton({super.key, this.onTap, this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +17,11 @@ class CustomButton extends StatelessWidget {
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(8)
         ),
-        child: const Center(
-          child: Text("Add", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400),),
+        child: Center(
+          child: isLoading ? const SizedBox(
+            width: 24,
+            height: 24,
+              child: CircularProgressIndicator(color: Colors.black,)) : const Text("Add", style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400),),
         ),
       ),
     );
