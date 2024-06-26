@@ -1,61 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:notes_app/ui/widgets/edit_note_view_body.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/models/note_model.dart';
 
+import '../../cubit/notes_cubit/notes_cubit.dart';
 import '../edit_note_view.dart';
 
 class NoteItem extends StatelessWidget {
-  const NoteItem({super.key});
+  const NoteItem({Key? key, required this.note}) : super(key: key);
 
+  final NoteModel note;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const EditNoteView()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return EditNoteView(
+              note: note,
+            );
+          }),
+        );
       },
       child: Container(
-        padding: const EdgeInsets.only(top: 24, bottom: 24, left: 8),
-        margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xffFFCC80),
+          color: Color(note.color),
           borderRadius: BorderRadius.circular(16),
         ),
+        padding: const EdgeInsets.only(left: 16, top: 24, bottom: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             ListTile(
-              title: const Text(
-                "Flutter Tips",
-                style: TextStyle(color: Colors.black, fontSize: 26),
+              title: Text(
+                note.title,
+                style: const TextStyle(
+                  fontSize: 26,
+                  color: Colors.black,
+                ),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  "Build your career with khaled natey",
+                  note.subTitle,
                   style: TextStyle(
-                      color: Colors.black.withOpacity(0.5), fontSize: 18),
+                    fontSize: 18,
+                    color: Colors.black.withOpacity(.4),
+                  ),
                 ),
               ),
               trailing: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  note.delete();
+
+                  BlocProvider.of<NotesCubit>(context).fetchAllNotes();
+                },
                 icon: const Icon(
-                  FontAwesomeIcons.trash,
-                  size: 24,
+                  Icons.delete,
                   color: Colors.black,
+                  size: 30,
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                right: 24,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                "May21, 2022",
+                note.date,
                 style: TextStyle(
-                    color: Colors.black.withOpacity(0.4), fontSize: 16),
+                  color: Colors.black.withOpacity(.4),
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),
