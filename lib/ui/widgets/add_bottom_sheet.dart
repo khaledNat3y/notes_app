@@ -22,8 +22,8 @@ class AddBottomSheet extends StatelessWidget {
             debugPrint("failed ${state.error}");
           }
           if (state is AddNoteSuccess) {
-            Navigator.pop(context);
             BlocProvider.of<NotesCubit>(context).fetchAllNotes();
+            Navigator.pop(context);
           }
         },
         builder: (context, state) {
